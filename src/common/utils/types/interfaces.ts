@@ -10,7 +10,7 @@ export interface IUser extends Document {
 }
 
 export interface AuthUser {
-	_id: IUser["_id"];
+	_id: IUser["_id"]; // Lookup type
 	name: string;
 	email: string;
 	role: string;
@@ -19,4 +19,8 @@ export interface AuthUser {
 export interface LoginResult {
 	token: string;
 	user: AuthUser;
+}
+
+interface JwtPayload {
+	id: string;
 }

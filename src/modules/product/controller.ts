@@ -1,5 +1,21 @@
 import type { Request, Response } from "express";
 
-export function root(_req: Request, res: Response): void {
-  res.json({ success: true, module: "product" });
+export function list(req: Request, res: Response): void {
+	res.json({ success: true, module: "product", requesterId: req.userId, data: [] });
+}
+
+export function getById(req: Request, res: Response): void {
+	res.json({ success: true, module: "product", id: req.params.id });
+}
+
+export function create(req: Request, res: Response): void {
+	res.status(201).json({ success: true, module: "product", created: true });
+}
+
+export function update(req: Request, res: Response): void {
+	res.json({ success: true, module: "product", id: req.params.id, updated: true });
+}
+
+export function remove(req: Request, res: Response): void {
+	res.json({ success: true, module: "product", id: req.params.id, deleted: true });
 }

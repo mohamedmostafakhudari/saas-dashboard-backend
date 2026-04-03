@@ -1,3 +1,4 @@
+import { NextFunction, Request, Response } from "express";
 import jwt from "jsonwebtoken";
 import { AppError } from "../errors/app-error";
 import { AuthUser, IUser } from "./types/interfaces";
@@ -16,3 +17,11 @@ export const generateToken = (userId: string): string => {
 
 	return jwt.sign({ id: userId }, secret, { expiresIn: "7d" });
 };
+
+// Eliminates try/catch boilerplate — catches any thrown error and forwards to
+// the global error handler middleware via next()
+export const asyncHandler =
+	(fn: (req: Request, res: Response) => Promise<void>) =>
+	(req: Request, res: Response, next: NextFunction) => {
+		fn(req, res).catch(next);
+	};
