@@ -1,3 +1,4 @@
+import * as cors from "cors";
 import express, { Application } from "express";
 import { errorHandler } from "./common/middleware/errorHandler.js";
 import { notFound } from "./common/middleware/notFound.js";
@@ -9,6 +10,7 @@ import indexRouter from "./routes/index.js";
 
 const app: Application = express();
 
+app.use(cors.default());
 // Body parsing
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));

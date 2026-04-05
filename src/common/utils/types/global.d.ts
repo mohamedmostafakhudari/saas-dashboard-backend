@@ -1,4 +1,4 @@
-import type { AuthenticatedUser } from "./interfaces.js";
+import type { AuthenticatedUser } from "./interfaces.ts";
 
 declare global {
 	namespace Express {
