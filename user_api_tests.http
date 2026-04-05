@@ -1,0 +1,60 @@
+POST http://localhost:5000/api/auth/register
+Content-Type: application/json
+
+{
+  "name": "user",
+  "email": "user@test.com",
+  "password": "123456"
+}
+
+### login as admin
+# @name login
+POST http://localhost:5000/api/auth/login
+Content-Type: application/json
+
+{
+  "email": "mohamed@test.com",
+  "password": "123456"
+}
+
+### login as user
+# @name login
+POST http://localhost:5000/api/auth/login
+Content-Type: application/json
+
+{
+  "email": "user@test.com",
+  "password": "123456"
+}
+
+###
+@authToken = {{login.response.body.data.token}}
+GET http://localhost:5000/api/users
+Authorization: Bearer {{authToken}}
+
+###
+@authToken = {{login.response.body.data.token}}
+POST http://localhost:5000/api/users
+Authorization: Bearer {{authToken}}
+Content-Type: application/json
+
+{
+  "name": "ahmed",
+  "email": "ahmed@xyz.com",
+  "password": 123456
+}
+###
+@authToken = {{login.response.body.data.token}}
+PATCH  http://localhost:5000/api/users/69d2857d221e488cae5d6ca1
+Authorization: Bearer {{authToken}}
+Content-Type: application/json
+
+{
+  "name": "Ahmed"
+}
+###
+@authToken = {{login.response.body.data.token}}
+DELETE http://localhost:5000/api/users/69d2857d221e488cae5d6ca1
+Authorization: Bearer {{authToken}}
+
+###

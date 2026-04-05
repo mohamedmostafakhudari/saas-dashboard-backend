@@ -1,0 +1,60 @@
+POST http://localhost:5000/api/auth/register
+Content-Type: application/json
+
+{
+  "name": "user",
+  "email": "user@test.com",
+  "password": "123456"
+}
+
+### login as admin
+# @name login
+POST http://localhost:5000/api/auth/login
+Content-Type: application/json
+
+{
+  "email": "mohamed@test.com",
+  "password": "123456"
+}
+
+### login as user
+# @name login
+POST http://localhost:5000/api/auth/login
+Content-Type: application/json
+
+{
+  "email": "user@test.com",
+  "password": "123456"
+}
+
+###
+@authToken = {{login.response.body.data.token}}
+GET http://localhost:5000/api/products
+Authorization: Bearer {{authToken}}
+
+###
+@authToken = {{login.response.body.data.token}}
+POST http://localhost:5000/api/products
+Authorization: Bearer {{authToken}}
+Content-Type: application/json
+
+{
+  "name": "product1",
+  "price": 50,
+  "stock": 20
+}
+###
+@authToken = {{login.response.body.data.token}}
+PATCH  http://localhost:5000/api/products/69d299ab4a033475ea57758d
+Authorization: Bearer {{authToken}}
+Content-Type: application/json
+
+{
+  "price": 100
+}
+###
+@authToken = {{login.response.body.data.token}}
+DELETE http://localhost:5000/api/products/69d299ab4a033475ea57758d
+Authorization: Bearer {{authToken}}
+
+###
