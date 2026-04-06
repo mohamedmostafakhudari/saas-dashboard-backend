@@ -1,9 +1,42 @@
 import { AppError } from "../../common/errors/app-error.js";
-import { IUser, UpdateUserData } from "../../common/utils/types/interfaces.js";
+import {
+	IUser,
+	PaginatedUsers,
+	PaginationParams,
+	UpdateUserData,
+} from "../../common/utils/types/interfaces.js";
 import User from "./user.model.js";
 
-export const getAllUsers = async (): Promise<IUser[]> => {
-	return User.find().select("-password");
+// ─── Get All Users (Paginated) ─────────────────────────────────────────────────
+export const getAllUsers = async (
+	params: PaginationParams = {},
+): Promise<PaginatedUsers> => {
+	const MAX_LIMIT = 50;
+
+	// Safely parse and clamp values
+	const page = Math.max(1, Number(params.page) || 1);
+	const limit = Math.min(MAX_LIMIT, Math.max(1, Number(params.limit) || 20));
+	const skip = (page - 1) * limit;
+
+	// Run both queries in parallel
+	const [users, total] = await Promise.all([
+		User.find().select("-password").skip(skip).limit(limit),
+		User.countDocuments(),
+	]);
+
+	const totalPages = Math.ceil(total / limit);
+
+	return {
+		users,
+		pagination: {
+			total,
+			page,
+			limit,
+			totalPages,
+			hasNext: page < totalPages,
+			hasPrev: page > 1,
+		},
+	};
 };
 
 export const createUser = async (

@@ -3,13 +3,15 @@ import { asyncHandler } from "../../common/utils/helpers.js";
 import * as userService from "./user.service.js";
 
 export const getAllUsers = asyncHandler(
-	async (_req: Request, res: Response) => {
-		const users = await userService.getAllUsers();
-
+	async (req: Request, res: Response) => {
+		const { page, limit } = req.query;
+		const result = await userService.getAllUsers({
+			page: Number(page),
+			limit: Number(limit),
+		});
 		res.status(200).json({
 			success: true,
-			count: users.length,
-			data: { users },
+			data: { ...result },
 		});
 	},
 );
